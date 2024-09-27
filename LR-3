@@ -1,0 +1,173 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class TemperatureAdapter {
+    private double temperature; // Температура
+    private String tempType; // Тип (Цельсий или Фаренгейт)
+    private List<Double> temperatureChanges; // Изменения температуры за последние N дней
+
+    // Конструктор
+    public TemperatureAdapter(double temperature, String tempType) {
+        this.temperature = temperature;
+        this.tempType = tempType;
+        this.temperatureChanges = new ArrayList<>();
+        this.temperatureChanges.add(temperature); // Сохраняем начальное значение температуры
+    }
+
+    // Геттер для температуры
+    public double getTemperature() {
+        return temperature;
+    }
+
+    // Сеттер для температуры
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+        this.temperatureChanges.add(temperature); // Сохраняем изменение температуры
+    }
+
+    // Геттер для типа температуры
+    public String getTempType() {
+        return tempType;
+    }
+
+    // Сеттер для типа температуры
+    public void setTempType(String tempType) {
+        this.tempType = tempType;
+    }
+
+    // Геттер для изменений температуры
+    public List<Double> getTemperatureChanges() {
+        return temperatureChanges;
+    }
+
+    // Метод для преобразования Цельсия в Фаренгейт
+    public double celsiusToFahrenheit(double celsius) {
+        return (celsius * 9 / 5) + 32;
+    }
+
+    // Метод для преобразования Фаренгейта в Цельсий
+    public double fahrenheitToCelsius(double fahrenheit) {
+        return (fahrenheit - 32) * 5 / 9;
+    }
+
+    // Метод для преобразования температуры в зависимости от типа
+    public double convertTemperature() {
+        if (tempType.equalsIgnoreCase("Celsius")) {
+            return celsiusToFahrenheit(temperature);
+        } else if (tempType.equalsIgnoreCase("Fahrenheit")) {
+            return fahrenheitToCelsius(temperature);
+        } else {
+            throw new IllegalArgumentException("Unknown temperature type. Use 'Celsius' or 'Fahrenheit'.");
+        }
+    }
+
+    public static void main(String[] args) {
+        // Пример использования
+        TemperatureAdapter adapter = new TemperatureAdapter(25, "Celsius");
+        System.out.println("Температура в Фаренгейтах: " + adapter.convertTemperature());
+
+        adapter.setTemperature(30); // Изменение температуры
+        adapter.setTempType("Celsius");
+        System.out.println("Температура в Фаренгейтах: " + adapter.convertTemperature());
+
+        System.out.println("Изменения температуры за последние дни: " + adapter.getTemperatureChanges());
+    }
+}
+
+
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TemperatureConverter {
+    private String type; // "Celsius" или "Fahrenheit"
+    private double temperature;
+    private List<Double> temperatureChanges; // Список температур за последние N дней
+
+    // Конструктор
+    public TemperatureConverter(String type, double temperature) {
+        this.type = type;
+        this.temperature = temperature;
+        this.temperatureChanges = new ArrayList<>();
+        this.temperatureChanges.add(temperature); // Добавляем начальную температуру
+    }
+
+    // Геттер для типа
+    public String getType() {
+        return type;
+    }
+
+    // Сеттер для типа
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    // Геттер для температуры
+    public double getTemperature() {
+        return temperature;
+    }
+
+    // Сеттер для температуры
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+        temperatureChanges.add(temperature); // Добавляем новое значение температуры в список изменений
+    }
+
+    // Метод для преобразования Цельсия в Фаренгейт
+    public double celsiusToFahrenheit(double celsius) {
+        return (celsius * 9/5) + 32;
+    }
+
+    // Метод для преобразования Фаренгейта в Цельсий
+    public double fahrenheitToCelsius(double fahrenheit) {
+        return (fahrenheit - 32) * 5/9;
+    }
+
+    // Геттер для температурных изменений за последние N дней
+    public List<Double> getTemperatureChanges() {
+        return new ArrayList<>(temperatureChanges); // Возвращаем копию списка изменений
+    }
+
+    // Метод для вывода температурных изменений за последние N дней
+    public void printTemperatureChanges() {
+        System.out.println("Температурные изменения за последние " + temperatureChanges.size() + " дня(ей):");
+        for (double temp : temperatureChanges) {
+            System.out.println(temp + " " + type);
+        }
+    }
+}
+
+
+
+
+
+public class Main {
+    public static void main(String[] args) {
+        TemperatureConverter converter = new TemperatureConverter("Celsius", 25.0);
+        
+        // Изменяем температуру
+        converter.setTemperature(30.0);
+        converter.setTemperature(22.5);
+        
+        // Печатаем изменения температуры
+        converter.printTemperatureChanges();
+        
+        // Преобразуем текущую температуру в Фаренгейт
+        double fahrenheit = converter.celsiusToFahrenheit(converter.getTemperature());
+        System.out.println("Текущая температура в Фаренгейтах: " + fahrenheit);
+        
+        // Устанавливаем новую температуру в Фаренгейтах
+        converter.setType("Fahrenheit");
+        converter.setTemperature(fahrenheit);
+        
+        // Преобразуем обратно в Цельсий
+        double celsius = converter.fahrenheitToCelsius(converter.getTemperature());
+        System.out.println("Текущая температура в Цельсиях: " + celsius);
+        
+        // Печатаем изменения температуры после преобразования
+        converter.printTemperatureChanges();
+    }
+}
